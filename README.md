@@ -1,5 +1,6 @@
-# graalvm-notes
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
+# graalvm-notes
 * references
     * [New opportunities for Java developers with GraalVM - Oleg Šelajev](https://www.youtube.com/watch?v=hp-DekN3yMo)
     * [Particle Accelerators and Java with Quarkus - Burr Sutter](https://www.youtube.com/watch?v=KpS3-ZNeCfE)
