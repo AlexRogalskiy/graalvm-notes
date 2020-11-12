@@ -19,15 +19,15 @@
     * [Micronaut Deep Dive by Graeme Rocher](https://www.youtube.com/watch?v=S5yfTfPeue8)
     * [Twitter's quest for a wholly Graal runtime - Voxxed Days Singapore 2019](https://www.youtube.com/watch?v=TbUahT0jet0)
     
-# GraalVm
+## general
+* hotSpot is optimised for data center deployments, not cloud
 * fast java
 * instant startup, low footprint
 * polyglot
 * ahead-of-time compilation
-* hotSpot is optimised for data center deployments, not cloud
-* is JIT compiler
-* is written in java
-* substrateVm & native-image
+* JIT compiler
+* written in java
+* SubstrateVm & native-image
 * partial escape analysis
     * even if object can escape the method, graalvm assumes that it won't and
     start to use normal escape analysis
@@ -49,6 +49,10 @@
     ![alt text](img/java/dynamic_execution.png)
 * native image build process
     ![alt text](img/graalvm/native_image_build_process.png)
+
+## native images
+
+## aot vs jit
 * AOT
     * introduce and "extra" step to generate native code before deploying app
         * eg run jaotc command to convert class files to a platform specific "shared object"
@@ -101,7 +105,7 @@
     * modular design
     * better inlining and escape analysis
 
-# quarkus
+## quarkus
 * like spring boot
 * why? jvm & frameworks init on start-up -> high memory consumption & long start-up time
     * problematic if cloud
@@ -142,7 +146,7 @@ in use by the service are included in the resulting image
 * gizmo - bytecode generation library, used by extensions to generate all infrastructure
 * makes a difference if we only want to scale in cloud - and we want to have low first response time
 
-# micronaut
+## micronaut
 * a modern, jvm-based, full-stack framework for building modular, easily testable
 microservice and serverless applications
 * designed from the ground-up for Microservices and Serverless Computing
