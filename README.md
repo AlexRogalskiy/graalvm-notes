@@ -18,39 +18,45 @@
     * [Running Spring Boot applications as GraalVM native images by Sébastien Deleuze](https://www.youtube.com/watch?v=3eoAxphAUIg)
     * [Micronaut Deep Dive by Graeme Rocher](https://www.youtube.com/watch?v=S5yfTfPeue8)
     * [Twitter's quest for a wholly Graal runtime - Voxxed Days Singapore 2019](https://www.youtube.com/watch?v=TbUahT0jet0)
+    * https://www.stefankrause.net/wp/?p=64
+    * https://www.ibm.com/developerworks/java/library/j-jtp09275/index.html
     
 ## general
 * hotSpot is optimised for data center deployments, not cloud
-* fast java
-* instant startup, low footprint
+    * we need instant startup and low footprint today
+* GraalVM is a JIT compiler
 * polyglot
-* ahead-of-time compilation
-* JIT compiler
 * written in java
-* SubstrateVm & native-image
-* partial escape analysis
-    * even if object can escape the method, graalvm assumes that it won't and
-    start to use normal escape analysis
-    * if object is not on the heap but in the stack you could do more things
-    * allows for
-        * scalar replacement
-        * lock elision
-* closed-world principle
-    * what is not known to be true, is false, so that absence of information is interpreted as negative information
-    * When building a native executable, GraalVM operates with a closed world assumption. It analyzes the call tree 
-    and removes all the classes/methods/fields that are not used directly.
 * pros
     * startup speed
     * peak throughput
     * reduced max latency
     * small packaging
     * low memory footprint
-* java dynamic execution
-    ![alt text](img/java/dynamic_execution.png)
+* could be used instead as JIT C2
+* vs C2
+    * easier to understand
+    * modular design
+    * better inlining and escape analysis
+        * even if object can escape the method, graalvm assumes that it won't and start to use normal escape analysis
+        * if object is not on the heap but in the stack you could do more things
+        * allows for
+            * scalar replacement
+                * when an object is identified as non-escaping the JVM can replace its allocation on the heap 
+                with an allocation of its members on the stack which mitigates the lack of user guided 
+                stack allocation
+            * lock elision
+
+## native images
+* SubstrateVm & native-image
+* closed-world principle
+    * what is not known to be true, is false, so that absence of information is interpreted as negative information
+    * When building a native executable, GraalVM operates with a closed world assumption. It analyzes the call tree 
+    and removes all the classes/methods/fields that are not used directly.
 * native image build process
     ![alt text](img/graalvm/native_image_build_process.png)
 
-## native images
+## ahead of time compilation (AOT)
 
 ## aot vs jit
 * AOT
@@ -99,11 +105,6 @@
     * no JIT compiler data structures
     * no dynamic code cache
 * GraalVM native use non-parallel gc
-* could be used instead as JIT C2
-* vs C2
-    * easier to understand
-    * modular design
-    * better inlining and escape analysis
 
 ## quarkus
 * like spring boot
