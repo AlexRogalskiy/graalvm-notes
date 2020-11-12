@@ -17,6 +17,7 @@
     * [GraalVM native images explained by Oleg Šelajev](https://www.youtube.com/watch?v=YvVnBOMi0Rs)
     * [Running Spring Boot applications as GraalVM native images by Sébastien Deleuze](https://www.youtube.com/watch?v=3eoAxphAUIg)
     * [Micronaut Deep Dive by Graeme Rocher](https://www.youtube.com/watch?v=S5yfTfPeue8)
+    * [Twitter's quest for a wholly Graal runtime - Voxxed Days Singapore 2019](https://www.youtube.com/watch?v=TbUahT0jet0)
     
 # GraalVm
 * fast java
@@ -95,7 +96,10 @@
     * no dynamic code cache
 * GraalVM native use non-parallel gc
 * could be used instead as JIT C2
-
+* vs C2
+    * easier to understand
+    * modular design
+    * better inlining and escape analysis
 
 # quarkus
 * like spring boot
