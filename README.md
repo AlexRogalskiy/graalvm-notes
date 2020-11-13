@@ -63,37 +63,33 @@
 * is the act of compiling a higher-level programming language such as C or C++, or an intermediate representation 
 such as Java bytecode into a native (system-dependent) machine code so that the resulting binary file can 
 execute natively
-* feature is enabled JAVA9: jaotc compiler
 * aot vs jit
     ![alt text](img/graalvm/aot_vs_jit.png) 
-* heap and state can be captured by the graalvm native-image compiler
-    [alt text](img/graalvm/image_heap_compilation.png)
-    * image heap
-        * execution at run time start with an initial heap: the "image heap"
-            * objects are allocated in the jvm vm that runs the image generator
-            * heap snapshotting gathers all objects that are reachable at run time
-        * do things once at build time instead at every application startup
-            * class initializers, initializers for static and static final fields
-            * class initialization at image build time improves app startup
-                * by default, app classes are initialized at runtime
-                * most jdk classes are initialized at image build time
-        * examples for objects in the image heap
-            * java.lang.Class objects, enum constants
     * default: image build fails when a reachable class is missing
         * guarantees no linking errors at runtime
-
+* is enabled in Java 9
+    * jaotc compiler
 
 ## native images
 * single, self-contained executable
      * contains all the application code as well as necessary runtime support, ex. the garbage collector
+        * image build fails when a reachable class is missing
+            * guarantees no linking errors at runtime
      * easily copied
-     * no need to seek for various JAR, properties & other miscellaneous files and wait for them to open, load 
-     and initialize
+     * no need to seek for various JAR, properties & other miscellaneous files and wait for them to 
+     open, load and initialize
      * gives us instant startup
 * able to capture a snapshot of an application memory
     * when native executable is started it continues exactly from where it was (snapshot)
     * eliminates repetitive initialization
         * makes the startup time even more instant
+            * class initializers, initializers for static and static final fields
+            * class initialization at image build time improves app startup
+                * by default, app classes are initialized at runtime
+                * most jdk classes are initialized at image build time
+    * do things once at build time instead at every application startup
+    * examples for objects in the image heap
+        * java.lang.Class objects, enum constants
 * lower memory consumption
     * closed-world principle
         * what is not known to be true, is false
@@ -122,43 +118,44 @@ execute natively
                                                                                                                    
         > heliodon.io team
     * GraalVM native use non-parallel gc
-
 * native image build process
-
     ![alt text](img/graalvm/native_image_build_process.png)
+    ![alt text](img/graalvm/heap_compilation.png)
 * SubstrateVm
-    * Native image tool (part of GraalVM) which focuses on AOT compilation
+    * native image tool (part of GraalVM) which focuses on AOT compilation
     * takes a regular Java application and compile it into native binary
     * re-implementation of the JVM on a completely different basis
         * produces small, HotSpot independent code that starts fast and runs well in cloud based environment
 
 ## quarkus
-* like spring boot
-* why? jvm & frameworks init on start-up -> high memory consumption & long start-up time
-    * problematic if cloud
-* start-up + first response
-    * quarkus + openjdk - 2.5 seconds
-    * quarkus + GraalVm - 0.055 seconds
-* applicable for serverless
-* under the hood
-    * SubstrateVm
-        * superpower: dead code elimination
-        * for example: if you use hibernate and not use oracle - you don't need around 100 classes
-        * analysis a whole graph of app and delete not used code
-* hot reload
-    * quarkus:dev makes quarkus run in dev mode and provide hot-reload capabilities
-    * changes made to source and configuration files are automatically re-compiled once the
-    browser is refreshed
-* perfect fit for serverless/event-driven environments where we need to spin up
-a service in real time to react to an event
-* statically compiled executables benefit from close-world optimizations, such as fine-grained
-dead-code elimination, where only the portions of frameworks (including the JDK itself) actually
-in use by the service are included in the resulting image
+* price to pay for spring boot: memory, cpu, start-up
+    * because of proxies, injections, reflections, scan all the code etc
 * supersonic?
     * fast boot
 * subatomic?
     * low memory, high density
-* fast boot time = instant scale up
+* why? 
+    * high memory consumption & long start-up time is problematic if cloud
+* start-up + first response
+    * spring boot + openjdk - 5 seconds
+    * quarkus + openjdk - 2.5 seconds
+    * quarkus + GraalVm - 0.055 seconds
+* applicable for serverless
+    * perfect fit for event-driven environments where we need to spin up
+    a service in real time to react to an event
+    * fast boot time = instant scale up
+    * makes a difference if we only want to scale in cloud - and we want to have low first response time
+* under the hood
+    * SubstrateVm
+        * superpower: dead code elimination
+            * analysis a whole graph of app and delete not used code
+            * only the portions of frameworks (including the JDK itself) actually
+            in use by the service are included in the resulting image            
+            * for example: if you use hibernate and not use oracle - you don't need around 100 classes
+* hot reload
+    * `quarkus:dev` provides hot-reload capabilities
+    * changes made to source and configuration files are automatically re-compiled once the
+    browser is refreshed
 * how a traditional stack works
     1. search for configuration files, parse them
     1. classpath scanning to find annotated classes
@@ -171,14 +168,18 @@ in use by the service are included in the resulting image
 * jandex - high performance classpath scanner & indexer: avoids any class initialization
 * arc - CDI based dependency injection, at build time
 * gizmo - bytecode generation library, used by extensions to generate all infrastructure
-* makes a difference if we only want to scale in cloud - and we want to have low first response time
 
 ## micronaut
-* a modern, jvm-based, full-stack framework for building modular, easily testable
-microservice and serverless applications
+* a microservices and serverless focused framework
+    * library/toolkit vs framework
+        * when you use a library, you are in charge of the flow of the application
+            * you are choosing when and where to call the library
+        * when you use a framework, the framework is in charge of the flow
+            * it provides some places for you to plug in your code, but it calls the code you plugged 
+            in as needed
+    * reflection free, runtime proxy free, no dynamic classloading
 * designed from the ground-up for Microservices and Serverless Computing
-    * designed with microservices and cloud computing in mind with a lot of
-    cloud-native features like
+    * a lot of cloud-native features
         * service discovery
         * distributed tracing
         * asynchronous communication
@@ -186,44 +187,37 @@ microservice and serverless applications
         * circuit breakers
         * scalability and load balancing
         * external configuration
-* library/toolkit vs framework
-    * When you use a library, you are in charge of the flow of the application. 
-        * You are choosing when and where to call the library. 
-    * When you use a framework, the framework is in charge of the flow. 
-        * It provides some places for you to plug in your code, but it calls the code you plugged in as needed.
-* price to pay for spring boot: memory, cpu, start-up
-    * because of proxies, injections, reflections, scan all the code etc
-* reflection based approach to DI/AOP
-    * no common reflection cache in java, each library/framework produces a unique reflection cache
-        * this makes it extremely difficult to optimize memory consumption
-    * reflective calls are difficult for the JIT to optimize
-    * traditional AOP has heavy reliance on runtime proxy creation which slows
-    app performance, makes debugging harder and increases memory consumption
-* micronaut compile-time approach to DI/AOP
-    * it processes classes at compile time and produces all metadata at compile time
-    * doesn't need to scan all your classes, methods, properties to "understand" your app
-    * uses Ahead of Time (AOT) compilation via annotation processors or AST transforms for groovy
-    * pros
-        * improves startup perfomance
-        * reduces memory consumption
-        * reducing proxies and stack trace size
-        * improving debugging
-* a microservices and serverless focused framework
-* a complete application framework for any type of app
-* dependency injection, AOP, configuration management, etc...
-* reflection free, runtime proxy free, no dynamic classloading
-* existing data access solutions
-    * spring data, gorm etc
-    * rely heavily on reflection and runtime proxies
-    * must compute queries at runtime
-    * cost of computation grows as your application grows
-* micronaut data
-    * precomputes queries at compilation time
-    * uses micronaut's reflection-free aop
-    * zero runtime overhead database access solution
-    * compilation time checking
-    * smaller stack traces
-    * jpa-ql and sql currently supported
+* DI/AOP approach
+    * reflection based
+        * no common reflection cache in java, each library/framework produces a unique reflection cache
+            * extremely difficult to optimize memory consumption
+        * reflective calls are difficult for the JIT to optimize
+        * traditional AOP has heavy reliance on runtime proxy creation
+            * slows app performance
+            * makes debugging harder
+            * increases memory consumption
+    * micronaut
+        * processes classes at compile time and produces all metadata at compile time
+        * doesn't need to scan all your classes, methods, properties to "understand" your app
+        * uses Ahead of Time (AOT) compilation via annotation processors
+        * pros
+            * improves startup perfomance
+            * reduces memory consumption
+            * reducing proxies and stack trace size
+            * improving debugging
+* data access approach
+    * existing data access solutions
+        * spring data, gorm etc
+        * rely heavily on reflection and runtime proxies
+        * must compute queries at runtime
+        * cost of computation grows as your application grows
+    * micronaut
+        * precomputes queries at compilation time
+        * uses micronaut's reflection-free aop
+        * zero runtime overhead database access solution
+        * compilation time checking
+        * smaller stack traces
+        * jpa-ql and sql currently supported
 * solutions
     * problem: limited annotation API
         * solution: precomputed AnnotationMetadata
