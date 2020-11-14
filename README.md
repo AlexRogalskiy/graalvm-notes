@@ -138,6 +138,7 @@ execute natively
     * GraalVM native use non-parallel gc
 * native image build process
     ![alt text](img/native_image_build_process.png)
+    ![alt text](img/native_image_generation.png)
     ![alt text](img/heap_compilation.png)
 * SubstrateVm
     * native image tool (part of GraalVM) which focuses on AOT compilation
