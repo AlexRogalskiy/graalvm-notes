@@ -19,6 +19,7 @@
     * [Micronaut Deep Dive by Graeme Rocher](https://www.youtube.com/watch?v=S5yfTfPeue8)
     * [Twitter's quest for a wholly Graal runtime - Voxxed Days Singapore 2019](https://www.youtube.com/watch?v=TbUahT0jet0)
     * [New opportunities for Java developers with GraalVM. Alina Yurenko, Oracle](https://www.youtube.com/watch?v=FenOzLslj4c)
+    * [Quarkus and GraalVM: booting Hibernate at supersonic speed, subatomic size by Sanne Grinovero](https://www.youtube.com/watch?v=za5CSBX-UME)
     * https://www.stefankrause.net/wp/?p=64
     * https://www.ibm.com/developerworks/java/library/j-jtp09275/index.html
     * https://www.graalvm.org/reference-manual/native-image/SubstrateVM/
@@ -41,7 +42,6 @@
             * it forgets about the previous line, so loops are translated time and again to machine code
 * polyglot
     ![alt text](img/polyglot_architecture.png)
-    ![alt text](img/truffle_framework.png)
 * written in java
     * integration with VM using JVMCI (jvm compiler interface - available since java 9)
     * truffle context
