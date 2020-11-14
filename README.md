@@ -18,6 +18,7 @@
     * [Running Spring Boot applications as GraalVM native images by Sébastien Deleuze](https://www.youtube.com/watch?v=3eoAxphAUIg)
     * [Micronaut Deep Dive by Graeme Rocher](https://www.youtube.com/watch?v=S5yfTfPeue8)
     * [Twitter's quest for a wholly Graal runtime - Voxxed Days Singapore 2019](https://www.youtube.com/watch?v=TbUahT0jet0)
+    * [New opportunities for Java developers with GraalVM. Alina Yurenko, Oracle](https://www.youtube.com/watch?v=FenOzLslj4c)
     * https://www.stefankrause.net/wp/?p=64
     * https://www.ibm.com/developerworks/java/library/j-jtp09275/index.html
     * https://www.graalvm.org/reference-manual/native-image/SubstrateVM/
@@ -25,13 +26,30 @@
     * https://en.wikipedia.org/wiki/Ahead-of-time_compilation
     * https://medium.com/@sauravomar01/ahead-of-time-vs-just-in-time-in-java-8456f5a77e00
     * https://stackoverflow.com/questions/46579565/is-ahead-of-time-compilation-available-in-java-9
+    * https://en.wikipedia.org/wiki/GraalVM
+    * https://www.beyondjava.net/truffle-compiler-compiler
+    * https://en.wikipedia.org/wiki/Partial_evaluation
     
 ## general
 * hotSpot is optimised for data center deployments, not cloud
     * we need instant startup and low footprint today
-* GraalVM is a JIT compiler
+* GraalVM offers both a JIT compiler and an AOT compiler for Java
+    * interpreter vs compiler
+        * in a nutshell: compiler runs in advance, whereas the interpreter 
+        works on-the-fly
+        * interpreter reads program line-by-line and generates the machine code of the line on-the-fly
+            * it forgets about the previous line, so loops are translated time and again to machine code
 * polyglot
+    ![alt text](img/polyglot_architecture.png)
+    ![alt text](img/truffle_framework.png)
 * written in java
+    * integration with VM using JVMCI (jvm compiler interface - available since java 9)
+    * truffle context
+        * a language abstract syntax tree interpreter which allows implementing languages 
+        on top of the GraalVM
+        * it's an API providing everything you need to write an interpreter, plus a framework 
+        allowing you to leverage partial evaluation
+            * Futamura projections
 * pros
     * startup speed
     * peak throughput
@@ -64,7 +82,7 @@
 such as Java bytecode into a native (system-dependent) machine code so that the resulting binary file can 
 execute natively
 * aot vs jit
-    ![alt text](img/graalvm/aot_vs_jit.png) 
+    ![alt text](img/aot_vs_jit.png) 
     * default: image build fails when a reachable class is missing
         * guarantees no linking errors at runtime
 * is enabled in Java 9
@@ -119,8 +137,8 @@ execute natively
         > heliodon.io team
     * GraalVM native use non-parallel gc
 * native image build process
-    ![alt text](img/graalvm/native_image_build_process.png)
-    ![alt text](img/graalvm/heap_compilation.png)
+    ![alt text](img/native_image_build_process.png)
+    ![alt text](img/heap_compilation.png)
 * SubstrateVm
     * native image tool (part of GraalVM) which focuses on AOT compilation
     * takes a regular Java application and compile it into native binary
