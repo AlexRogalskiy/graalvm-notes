@@ -20,6 +20,7 @@
     * [Twitter's quest for a wholly Graal runtime - Voxxed Days Singapore 2019](https://www.youtube.com/watch?v=TbUahT0jet0)
     * [New opportunities for Java developers with GraalVM. Alina Yurenko, Oracle](https://www.youtube.com/watch?v=FenOzLslj4c)
     * [Quarkus and GraalVM: booting Hibernate at supersonic speed, subatomic size by Sanne Grinovero](https://www.youtube.com/watch?v=za5CSBX-UME)
+    * [GOTO 2020 • Maximizing Java Application Performance with GraalVM • Oleg Šelajev](https://www.youtube.com/watch?v=PeMvksAZbdw)
     * https://www.stefankrause.net/wp/?p=64
     * https://www.ibm.com/developerworks/java/library/j-jtp09275/index.html
     * https://www.graalvm.org/reference-manual/native-image/SubstrateVM/
@@ -112,6 +113,10 @@ execute natively
     * closed-world principle
         * what is not known to be true, is false
             * absence of information is interpreted as negative information
+        * analysis needs to see all bytecode
+            * otherwise aggressive AOT optimizations are not possible
+            * otherwise unused classes, methods, and fields cannot be removed
+            * otherwise a class loader / bytecode interpreter is necessary at runtime
         * when building a native executable, GraalVM operates with a closed world assumption
             * it analyzes the call tree and removes all the classes/methods/fields that are not used directly
     * no meta-data for dynamically loaded classes
