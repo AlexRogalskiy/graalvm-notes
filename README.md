@@ -21,6 +21,7 @@
     * [New opportunities for Java developers with GraalVM. Alina Yurenko, Oracle](https://www.youtube.com/watch?v=FenOzLslj4c)
     * [Quarkus and GraalVM: booting Hibernate at supersonic speed, subatomic size by Sanne Grinovero](https://www.youtube.com/watch?v=za5CSBX-UME)
     * [GOTO 2020 • Maximizing Java Application Performance with GraalVM • Oleg Šelajev](https://www.youtube.com/watch?v=PeMvksAZbdw)
+    * [Deep dive into using GraalVM for Java and JavaScript developers by Oleg Šelajev, Thomas Wuerthinger](https://www.youtube.com/watch?v=a-XEZobXspo)
     * https://www.stefankrause.net/wp/?p=64
     * https://www.ibm.com/developerworks/java/library/j-jtp09275/index.html
     * https://www.graalvm.org/reference-manual/native-image/SubstrateVM/
@@ -88,7 +89,32 @@ execute natively
         * guarantees no linking errors at runtime
 * is enabled in Java 9
     * jaotc compiler
-
+* potential risk - static initializers are resolved at compile time
+    ```
+    class HelloCachedTime {
+        static final Date CACHED_TIME = Startup.TIME;
+        
+        public static void main(String args[]) {
+            System.out.println("Startup: " + CACHED_TIME);
+            System.out.println("Now: " + new Date());
+        }
+    
+    }
+    
+    class Startup {
+        static final Date TIME = new Date();
+    }
+    ```
+    * javac HelloCachedTime.java, java HelloCachedTime
+        ```
+        Startup: Fri Aug 31 13:17:05 PDT 2018
+        Now: Fri Aug 31 13:17:05 PDT 2018
+        ```
+    * native-image HelloCachedTime, ./hellocachedtime
+        ```
+        Startup: Fri Aug 31 13:22:12 PDT 2018
+        Now: Fri Aug 31 13:17:05 PDT 2018
+        ```
 ## native images
 * single, self-contained executable
      * contains all the application code as well as necessary runtime support, ex. the garbage collector
