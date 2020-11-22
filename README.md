@@ -115,6 +115,7 @@ execute natively
         Startup: Fri Aug 31 13:22:12 PDT 2018
         Now: Fri Aug 31 13:17:05 PDT 2018
         ```
+        * remedy: use flag `--delay-class-initialization-to-runtime=class`
 ## native images
 * single, self-contained executable
      * contains all the application code as well as necessary runtime support, ex. the garbage collector
