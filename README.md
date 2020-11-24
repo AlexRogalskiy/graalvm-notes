@@ -22,6 +22,7 @@
     * [Quarkus and GraalVM: booting Hibernate at supersonic speed, subatomic size by Sanne Grinovero](https://www.youtube.com/watch?v=za5CSBX-UME)
     * [GOTO 2020 • Maximizing Java Application Performance with GraalVM • Oleg Šelajev](https://www.youtube.com/watch?v=PeMvksAZbdw)
     * [Deep dive into using GraalVM for Java and JavaScript developers by Oleg Šelajev, Thomas Wuerthinger](https://www.youtube.com/watch?v=a-XEZobXspo)
+    * [JIT and AOT in the JVM with Mark Stoodley](https://www.youtube.com/watch?v=gx8DVVFPkcQ)
     * https://www.stefankrause.net/wp/?p=64
     * https://www.ibm.com/developerworks/java/library/j-jtp09275/index.html
     * https://www.graalvm.org/reference-manual/native-image/SubstrateVM/
@@ -89,6 +90,8 @@ execute natively
         * guarantees no linking errors at runtime
 * is enabled in Java 9
     * jaotc compiler
+* no longer platform neutral
+    * different AOT code needed for each deployment platform (Linux, Mac, Windows)
 * potential risk - static initializers are resolved at compile time
     ```
     class HelloCachedTime {
