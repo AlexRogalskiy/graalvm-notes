@@ -24,6 +24,7 @@
     * [Deep dive into using GraalVM for Java and JavaScript developers by Oleg Šelajev, Thomas Wuerthinger](https://www.youtube.com/watch?v=a-XEZobXspo)
     * [JIT and AOT in the JVM with Mark Stoodley](https://www.youtube.com/watch?v=gx8DVVFPkcQ)
     * [Charlie Gracie: Current state of JVM Escape Analysis and downstream optimizations](https://www.youtube.com/watch?v=p1MhRBYS-k0)
+    * [4Developers Wrocław 2019: Deep dive into GraalVM. To JIT or not to JIT [ENG], Denis Dushyn](https://www.youtube.com/watch?v=yT86amm3rSY)
     * https://www.stefankrause.net/wp/?p=64
     * https://www.ibm.com/developerworks/java/library/j-jtp09275/index.html
     * https://www.graalvm.org/reference-manual/native-image/SubstrateVM/
@@ -85,6 +86,7 @@
                 * when an object is identified as non-escaping the JVM can replace its allocation on the heap 
                 with an allocation of its members on the stack which mitigates the lack of user guided 
                 stack allocation
+                ![alt text](img/scalar_replacement.png) 
             * lock elision
 
 ## ahead of time compilation (AOT)
