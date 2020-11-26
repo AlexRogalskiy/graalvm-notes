@@ -23,6 +23,7 @@
     * [GOTO 2020 • Maximizing Java Application Performance with GraalVM • Oleg Šelajev](https://www.youtube.com/watch?v=PeMvksAZbdw)
     * [Deep dive into using GraalVM for Java and JavaScript developers by Oleg Šelajev, Thomas Wuerthinger](https://www.youtube.com/watch?v=a-XEZobXspo)
     * [JIT and AOT in the JVM with Mark Stoodley](https://www.youtube.com/watch?v=gx8DVVFPkcQ)
+    * [Charlie Gracie: Current state of JVM Escape Analysis and downstream optimizations](https://www.youtube.com/watch?v=p1MhRBYS-k0)
     * https://www.stefankrause.net/wp/?p=64
     * https://www.ibm.com/developerworks/java/library/j-jtp09275/index.html
     * https://www.graalvm.org/reference-manual/native-image/SubstrateVM/
@@ -71,7 +72,13 @@
     * easier to understand
     * modular design
     * better inlining and escape analysis
-        * even if object can escape the method, graalvm assumes that it won't and start to use normal escape analysis
+        * partial escape analysis
+            * a variant of escape analysis which tracks object lifetime along different control flow
+            paths of method
+            * an object can be marked as not escaping along one path even though it escapes along
+            a different path
+            * even if object can escape the method, graalvm assumes that it won't and start to 
+            use normal escape analysis
         * if object is not on the heap but in the stack you could do more things
         * allows for
             * scalar replacement
